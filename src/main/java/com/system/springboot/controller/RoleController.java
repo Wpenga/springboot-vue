@@ -1,19 +1,15 @@
 package com.system.springboot.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.system.springboot.service.IRoleService;
-import com.system.springboot.entity.Role;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.system.springboot.entity.Role;
+import com.system.springboot.service.IRoleService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
-
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -32,7 +28,7 @@ public class RoleController {
     //新增或修改 @RequestBody将前台的数据映射成User对象
     @PostMapping
     public  boolean save(@RequestBody Role role){
-        return roleService.saveOrUpdate(user);
+        return roleService.saveOrUpdate(role);
     }
     //删除数据 @PathVariable表述请求地址必须是（/{id}）
     @DeleteMapping("/{id}")
@@ -48,7 +44,7 @@ public class RoleController {
     //查询所有数据
     @GetMapping
     @ApiOperation(value = "获取所有数据")
-    public List<User> findAll(){
+    public List<Role> findAll(){
             return roleService.list();
     }
     //查询单个数据
