@@ -97,7 +97,7 @@ public class ${table.controllerName} {
 ##        queryWrapper.like(Strings.isNotEmpty(username),"username",username);
 ##        queryWrapper.like(Strings.isNotEmpty(nickname),"nickname",nickname);
 ##        queryWrapper.like(Strings.isNotEmpty(address),"address",address);
-##        queryWrapper.orderByDesc("id");
+        queryWrapper.orderByDesc("id");
         return ${table.entityPath}Service.page(page,queryWrapper);
     }
 }

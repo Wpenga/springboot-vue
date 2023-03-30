@@ -36,7 +36,7 @@ public class CodeGenerator  {
 //                    builder.addInclude("stu_user") // 设置需要生成的表名
 //                            .addTablePrefix("t_", "stu_"); // 设置过滤表前缀
 //                    builder.addInclude("sys_file") // 设置需要生成的表名
-                    builder.addInclude("sys_role") // 设置需要生成的表名
+                    builder.addInclude("sys_menu") // 设置需要生成的表名
                             .addTablePrefix("sys_", "stu_"); // 设置过滤表前缀
                 })
 //                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
