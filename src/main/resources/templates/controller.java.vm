@@ -1,0 +1,104 @@
+package ${package.Controller};
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import $!{package.Service}.$!{table.serviceName};
+import ${package.Entity}.${entity};
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import javax.annotation.Resource;
+import java.util.List;
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};import javax.annotation.Resource;
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+    @Resource
+    private ${table.serviceName} ${table.entityPath}Service;
+    @ApiOperation(value = "新增或更新数据",notes = "根据id实现数据的更新")
+    //新增或修改 @RequestBody将前台的数据映射成User对象
+    @PostMapping
+    public  boolean save(@RequestBody ${entity} ${table.entityPath}){
+        return ${table.entityPath}Service.saveOrUpdate(user);
+    }
+    //删除数据 @PathVariable表述请求地址必须是（/{id}）
+    @DeleteMapping("/{id}")
+    @ApiOperation("删除")
+    public boolean delete(@PathVariable Integer id){
+            return ${table.entityPath}Service.removeById(id);
+    }
+    @PostMapping("/del/batch")
+    @ApiOperation("批量删除")
+    public boolean deleteBatch(@RequestBody List<Integer> ids){
+            return ${table.entityPath}Service.removeByIds(ids);
+    }
+    //查询所有数据
+    @GetMapping
+    @ApiOperation(value = "获取所有数据")
+    public List<User> findAll(){
+##    //        List<User> all = userMapper.selectList(null);
+            return ${table.entityPath}Service.list();
+    }
+    //查询单个数据
+    @GetMapping("/id")
+    @ApiOperation(value = "获取单个数据")
+    public ${entity} findAll(@PathVariable Integer id){
+##            //        List<User> all = userMapper.selectList(null);
+        return ${table.entityPath}Service.getById(id);
+    }
+    //分页查询
+    // 路径 /user/page
+    // @RequestParam 接受 pageNum=1&pageSize=10
+    @GetMapping("/page")
+    @ApiOperation("分页/模糊查询")
+    public IPage<${entity}> findPage(@RequestParam Integer pageNum,
+                                @RequestParam Integer pageSize
+##                                @RequestParam(defaultValue = "") String username,
+##                                @RequestParam(defaultValue = "") String address,
+##                                @RequestParam(defaultValue = "") String  nickname
+                                    ){
+##             MyBatis Plus
+            IPage<${entity}> page = new Page<>(pageNum, pageSize);
+
+            QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
+        //多条件模糊查询
+##        queryWrapper.like(Strings.isNotEmpty(username),"username",username);
+##        queryWrapper.like(Strings.isNotEmpty(nickname),"nickname",nickname);
+##        queryWrapper.like(Strings.isNotEmpty(address),"address",address);
+##        queryWrapper.orderByDesc("id");
+        return ${table.entityPath}Service.page(page,queryWrapper);
+    }
+}
+#end

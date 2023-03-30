@@ -1,0 +1,27 @@
+server:
+  ip: localhost
+  port: 8090
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mydb?serverTimezone=GMT%2b8
+    username: root
+    password: ''
+
+  mvc:
+    pathmatch:
+      #swagger配置
+      matching-strategy: ANT_PATH_MATCHER
+#    type: com.alibaba.druid.pool.DruidDataSource
+mybatis:
+  mapper-locations: classpath:mapper/*xml #扫描所有mapper下的xml文件
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+files:
+  upload:
+    path: H:/管理系统/files/
