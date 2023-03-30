@@ -63,11 +63,11 @@ public class RoleController {
     public Result findPage(@RequestParam Integer pageNum,
                            @RequestParam Integer pageSize,
                            @RequestParam(defaultValue = "") String name){
-            IPage<Role> page = new Page<>(pageNum, pageSize);
-            //多条件模糊查询
-            QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-            queryWrapper.like(Strings.isNotEmpty(name),"name",name);
-            queryWrapper.orderByDesc("id");
+        IPage<Role> page = new Page<>(pageNum, pageSize);
+        //多条件模糊查询
+        QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(Strings.isNotEmpty(name),"name",name);
+        queryWrapper.orderByDesc("id");
 
         return Result.success(roleService.page(page,queryWrapper));
     }

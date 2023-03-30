@@ -88,7 +88,7 @@ public class ${table.controllerName} {
 ##                                @RequestParam(defaultValue = "") String username,
 ##                                @RequestParam(defaultValue = "") String address,
 ##                                @RequestParam(defaultValue = "") String  nickname
-                                    ){
+                                ){
 ##             MyBatis Plus
             IPage<${entity}> page = new Page<>(pageNum, pageSize);
 
