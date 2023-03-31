@@ -31,12 +31,12 @@ public class CodeGenerator  {
                 .strategyConfig(builder -> {
                     builder.entityBuilder().enableLombok();//使用Lombok简写
 //                    builder.mapperBuilder().enableMapperAnnotation().build();  //自动注解@Mapper
-                    builder.controllerBuilder().enableHyphenStyle()  // 开启驼峰转连字符
+                    builder.controllerBuilder().enableHyphenStyle()  // 开启驼峰转换字符
                             .enableRestStyle();  // 开启生成@RestController 控制器
 //                    builder.addInclude("stu_user") // 设置需要生成的表名
 //                            .addTablePrefix("t_", "stu_"); // 设置过滤表前缀
 //                    builder.addInclude("sys_file") // 设置需要生成的表名
-                    builder.addInclude("sys_dict") // 设置需要生成的表名
+                    builder.addInclude("sys_role_menu") // 设置需要生成的表名
                             .addTablePrefix("sys_", "stu_"); // 设置过滤表前缀
                 })
 //                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
