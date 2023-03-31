@@ -3,8 +3,11 @@ package com.system.springboot.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.system.springboot.common.Constants;
 import com.system.springboot.common.Result;
+import com.system.springboot.entity.Dict;
 import com.system.springboot.entity.Menu;
+import com.system.springboot.mapper.DictMapper;
 import com.system.springboot.service.IMenuService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,9 @@ import java.util.stream.Collectors;
 public class MenuController {
     @Resource
     private IMenuService menuService;
+    @Resource
+    private DictMapper dictMapper;
+
     @ApiOperation(value = "新增或更新数据",notes = "根据id实现数据的更新")
     //新增或修改 @RequestBody将前台的数据映射成User对象
     @PostMapping
@@ -69,7 +75,6 @@ public class MenuController {
         return Result.success(menuService.getById(id));
     }
     //分页查询
-    // 路径 /user/page
     // @RequestParam 接受 pageNum=1&pageSize=10
     @GetMapping("/page")
     @ApiOperation("分页/模糊查询")
@@ -82,5 +87,12 @@ public class MenuController {
         //多条件模糊查询
         queryWrapper.orderByDesc("id");
         return Result.success(menuService.page(page,queryWrapper));
+    }
+
+    @GetMapping("/icons")
+    public Result getIcons(){
+        QueryWrapper<Dict> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("type", Constants.DICT_TYPE_ICON);
+        return Result.success(dictMapper.selectList(queryWrapper));
     }
 }

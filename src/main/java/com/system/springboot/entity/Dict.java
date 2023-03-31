@@ -1,7 +1,5 @@
 package com.system.springboot.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -15,25 +13,24 @@ import lombok.Setter;
  * </p>
  *
  * @author 吴泽鹏
- * @since 2023-03-30
+ * @since 2023-03-31
  */
 @Getter
 @Setter
-  @TableName("sys_role")
-@ApiModel(value = "Role对象", description = "")
-public class Role implements Serializable {
+@TableName("sys_dict")
+@ApiModel(value = "Dict对象", description = "")
+public class Dict implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-      @ApiModelProperty("id")
-      @TableId(value = "id", type = IdType.AUTO)
-      private Integer id;
 
       @ApiModelProperty("名称")
       private String name;
 
-      @ApiModelProperty("表述")
-      private String description;
+      @ApiModelProperty("内容")
+      private String value;
+
+      @ApiModelProperty("类型")
+      private String type;
 
 
 }
