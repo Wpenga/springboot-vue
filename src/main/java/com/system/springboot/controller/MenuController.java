@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -53,21 +52,9 @@ public class MenuController {
     @GetMapping
     @ApiOperation(value = "获取所有数据")
     public Result findAll(@RequestParam String name){
-        QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("name",name);
-        queryWrapper.orderByDesc("id");
-
-        List<Menu> list = menuService.list();
-        //找出pid为null的一级菜单
-        List<Menu> parentNode = list.stream().filter(menu -> menu.getPid() == null).collect(Collectors.toList());
-        //找出一级菜单子菜单
-        for(Menu menu : parentNode){
-            //筛选所有数据中pid=父级id的数据就是二级菜单
-            menu.setChildren(list.stream().filter(m-> menu.getId().equals(m.getPid())).collect(Collectors.toList()));
-        }
-        return Result.success(parentNode);
-//        return Result.success(menuService.list());
+        return Result.success(menuService.findMenus(name));
     }
+
     //查询单个数据
     @GetMapping("/id")
     @ApiOperation(value = "获取单个数据")

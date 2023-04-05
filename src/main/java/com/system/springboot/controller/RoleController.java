@@ -60,17 +60,26 @@ public class RoleController {
     // @RequestParam 接受 pageNum=1&pageSize=10
     @GetMapping("/page")
     @ApiOperation("分页/模糊查询")
-    public Result findPage(@RequestParam Integer pageNum,
-                           @RequestParam Integer pageSize,
-                           @RequestParam(defaultValue = "") String name){
-        IPage<Role> page = new Page<>(pageNum, pageSize);
-        //多条件模糊查询
+    public Result findPage(@RequestParam String name,
+                           @RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize) {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like(Strings.isNotEmpty(name),"name",name);
+        queryWrapper.like("name", name);
         queryWrapper.orderByDesc("id");
-
-        return Result.success(roleService.page(page,queryWrapper));
+        return Result.success(roleService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
+
+//    public Result findPage(@RequestParam Integer pageNum,
+//                           @RequestParam Integer pageSize,
+//                           @RequestParam(defaultValue = "") String name){
+//        IPage<Role> page = new Page<>(pageNum, pageSize);
+//        //多条件模糊查询
+//        QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.like(Strings.isNotEmpty(name),"name",name);
+//        queryWrapper.orderByDesc("id");
+//
+//        return Result.success(roleService.page(page,queryWrapper));
+//    }
 
     /**
      * 绑定角色和菜单的关系
