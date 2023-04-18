@@ -15,6 +15,7 @@ public class UserDTO {
     private String password;
     private String nickname;
     private String avatarUrl;
+    private String address;
     private String token;
     private String role;
     private List<Menu> menus;

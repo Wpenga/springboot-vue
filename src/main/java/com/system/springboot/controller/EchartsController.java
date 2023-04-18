@@ -3,7 +3,7 @@ package com.system.springboot.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.Quarter;
-import com.system.springboot.UserService.IUserService;
+import com.system.springboot.service.IUserService;
 import com.system.springboot.common.Result;
 import com.system.springboot.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;

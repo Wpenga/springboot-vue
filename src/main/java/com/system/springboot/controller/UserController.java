@@ -7,12 +7,12 @@ import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.system.springboot.UserService.IUserService;
+import com.system.springboot.controller.dto.UserPasswordDTO;
+import com.system.springboot.service.IUserService;
 import com.system.springboot.common.Constants;
 import com.system.springboot.common.Result;
 import com.system.springboot.controller.dto.UserDTO;
 import com.system.springboot.entity.User;
-import com.system.springboot.utils.TokenUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -34,12 +35,8 @@ import java.util.List;
 @Api(tags = "用户类操作")
 @ToString
 public class UserController {
-//    @Autowired
-//    private UserMapper userMapper;
-//    @Autowired
     @Resource
     private IUserService userService;
-
     @PostMapping("/login")
     @ApiOperation("登录请求")
     public Result login(@RequestBody UserDTO userDTO){
@@ -63,6 +60,12 @@ public class UserController {
         return  Result.success(userService.register(userDTO));
     }
 
+    @PostMapping("/password")
+    @ApiOperation("修改密码")
+    public Result password(@RequestBody UserPasswordDTO userPasswordDTO) {
+        userService.updatePassword(userPasswordDTO);
+        return Result.success();
+    }
 
     @ApiOperation(value = "新增或更新数据",notes = "根据id实现数据的更新")
     //新增或修改 @RequestBody将前台的数据映射成User对象
@@ -87,14 +90,14 @@ public class UserController {
 
     //查询单个数据 根据id
     @GetMapping("/{id}")
-    @ApiOperation(value = "获取单个数据")
+    @ApiOperation(value = "根据id获取数据")
     public Result findOne(@PathVariable Integer id){
         return Result.success(userService.getById(id));
     }
 
     //查询单个数据 根据用户名
     @GetMapping("/username/{username}")
-    @ApiOperation(value = "获取所有数据")
+    @ApiOperation(value = "根据用户名获取数据")
     public Result findOne(@PathVariable String username){
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",username);
@@ -140,12 +143,7 @@ public class UserController {
         queryWrapper.like(Strings.isNotEmpty(address),"address",address);
         queryWrapper.orderByDesc("id");
 
-        //获取当前用户信息
-//        User currentUser = TokenUtils.getCurrentUser();
-//        System.out.println("获取当前用户信息========"+currentUser.getNickname());
-
         return  Result.success(userService.page(page,queryWrapper));
-//        return userService.page(page,queryWrapper);
     }
 
     //导出
@@ -156,17 +154,11 @@ public class UserController {
         // 通过工具类创建writer
         ExcelWriter writer = ExcelUtil.getWriter(true);
 
-        //自定义标题别名
-//        writer.addHeaderAlias("username", "用户名");
-//        writer.addHeaderAlias("password", "密码");
-//        writer.addHeaderAlias("nickname", "昵称");
-//        writer.addHeaderAlias("address", "地址");
-//        writer.addHeaderAlias("phone", "手机号");
-//        writer.addHeaderAlias("sign", "签到状态");
-//        writer.addHeaderAlias("avatarUrl", "签到状态");
-//        writer.addHeaderAlias("createTime", "创建时间");
-
+        Field[] fields = list.get(0).getClass().getDeclaredFields(); // 获取 User 类中所有的成员变量
+        int count = fields.length; // 获取成员变量数量
+        //System.out.println(count); // 输出成员变量数量
         // 一次性写出内容，使用默认样式，强制输出标题
+        writer.merge(count-1, "用户信息表");
         writer.write(list, true);
 
         //设置浏览器响应的格式
@@ -188,24 +180,11 @@ public class UserController {
         InputStream inputStream = file.getInputStream();
         //通过插件提供的方法读取输入流
         ExcelReader reader = ExcelUtil.getReader(inputStream);
-
-//        reader.addHeaderAlias("username", "用户名");
-//        reader.addHeaderAlias("password", "密码");
-//        reader.addHeaderAlias("nickname", "昵称");
-//        reader.addHeaderAlias("address", "地址");
-//        reader.addHeaderAlias("phone", "手机号");
-//        reader.addHeaderAlias("sign", "签到状态");
-//        reader.addHeaderAlias("avatarUrl", "签到状态");
-//        reader.addHeaderAlias("createTime", "创建时间");
         //读取的类型为泛型User
         List<User> list = reader.readAll(User.class);
-
-
-//        List<User> list = reader.read(0,1,User.class);
         //数据批量保存到数据库
         userService.saveBatch(list);
         System.out.println(list);
-//        return "导入成功";
         return Result.success(true);
     }
 }

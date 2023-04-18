@@ -9,6 +9,7 @@ import com.system.springboot.entity.Dict;
 import com.system.springboot.entity.Menu;
 import com.system.springboot.mapper.DictMapper;
 import com.system.springboot.service.IMenuService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/menu")
+@Api(tags = "菜单类操作")
 public class MenuController {
     @Resource
     private IMenuService menuService;
@@ -47,6 +49,12 @@ public class MenuController {
     @ApiOperation("批量删除")
     public Result deleteBatch(@RequestBody List<Integer> ids){
             return Result.success(menuService.removeByIds(ids));
+    }
+
+    @GetMapping("/ids")
+    @ApiOperation("菜单id数组")
+    public Result findAllIds() {
+        return Result.success(menuService.list().stream().map(Menu::getId));
     }
     //查询所有数据
     @GetMapping
@@ -72,7 +80,7 @@ public class MenuController {
         QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("name",name);
         //多条件模糊查询
-        queryWrapper.orderByDesc("id");
+//        queryWrapper.orderByDesc("id");
         return Result.success(menuService.page(page,queryWrapper));
     }
 

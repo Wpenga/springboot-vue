@@ -25,7 +25,8 @@ public class CodeGenerator  {
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.system.springboot") // 设置父包名
-                            .moduleName("system") // 设置父包模块名
+//                            .moduleName("system") // 设置父包模块名
+                            .moduleName(null) // 设置父包模块名
                             .pathInfo(Collections.singletonMap(OutputFile.xml, "H:\\管理系统\\springboot-maven\\src\\main\\resources\\mapper\\")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
@@ -36,7 +37,7 @@ public class CodeGenerator  {
 //                    builder.addInclude("stu_user") // 设置需要生成的表名
 //                            .addTablePrefix("t_", "stu_"); // 设置过滤表前缀
 //                    builder.addInclude("sys_file") // 设置需要生成的表名
-                    builder.addInclude("sys_role_menu") // 设置需要生成的表名
+                    builder.addInclude("stu_leave") // 设置需要生成的表名
                             .addTablePrefix("sys_", "stu_"); // 设置过滤表前缀
                 })
 //                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板

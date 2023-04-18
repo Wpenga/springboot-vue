@@ -1,6 +1,7 @@
 package com.system.springboot.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.system.springboot.controller.dto.UserPasswordDTO;
 import com.system.springboot.entity.User;
 import org.apache.ibatis.annotations.*;
 
@@ -8,6 +9,9 @@ import java.util.List;
 //实现set和getter
 //@Mapper  已全局配置
 public interface UserMapper extends BaseMapper<User> {
+    //更新密码
+    @Update("update stu_user set password = #{newPassword} where username = #{username} and password = #{password}")
+    int updatePassword(UserPasswordDTO userPasswordDTO);
 /*
     //查找所有数据
     @Select("select * from stu_user")

@@ -44,6 +44,7 @@ public class Menu implements Serializable {
       @ApiModelProperty("描述")
       private String description;
 
+      @ApiModelProperty("子菜单")
       @TableField(exist = false)
       private List<Menu> children;
 
@@ -52,4 +53,7 @@ public class Menu implements Serializable {
 
       @ApiModelProperty("页面路径")
       private String pagePath;
+
+      @ApiModelProperty("菜单顺序")
+      private String sortNum;
 }

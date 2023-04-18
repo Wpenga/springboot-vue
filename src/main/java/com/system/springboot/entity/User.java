@@ -23,24 +23,13 @@ import java.util.Date;
 //@ToString
 
 public class User {
-//    @TableId(type = IdType.AUTO)
-//    private Integer id;
-//    private String username;
-//    @JsonIgnore
-//    private String password;
-//    private String nickname;
-//    private String phone;
-//    private String address;
-//    private String sign;
-//    private String avatarUrl;
-//    private String createTime;
 
     @ApiModelProperty("主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty("用户名")
-    @Alias("用户名") //hutool提供的别名注解工具
+    @Alias("用户名")           //HuTool提供的别名注解工具
     private String username;
 
     @JsonIgnore
@@ -52,6 +41,10 @@ public class User {
     @Alias("昵称")
     private String nickname;
 
+    @ApiModelProperty("性别")
+    @Alias("性别")
+    private String sex;
+
     @ApiModelProperty("地址")
     @Alias("地址")
     private String address;
@@ -59,6 +52,10 @@ public class User {
     @ApiModelProperty("手机号")
     @Alias("手机号")
     private String phone;
+
+    @ApiModelProperty("邮箱")
+    @Alias("邮箱")
+    private String email;
 
     @ApiModelProperty("签到状态")
     @Alias("签到状态")
@@ -75,4 +72,10 @@ public class User {
     @ApiModelProperty("角色")
     @Alias("角色")
     private String role;
+
+//    @ApiModelProperty("签到时间")
+//    @Alias("签到时间")
+//    private String signTime;
+
+
 }

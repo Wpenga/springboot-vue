@@ -6,13 +6,11 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.system.springboot.UserService.IUserService;
+import com.system.springboot.service.IUserService;
 import com.system.springboot.common.Constants;
 import com.system.springboot.entity.User;
 import com.system.springboot.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -27,8 +25,8 @@ public class Jwtlnterceptor  implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-
+        //System.out.println("请求链接："+request.getRequestURI());
+        //获取token
         String token = request.getHeader("token");
         // 如果不是映射到方法直接通过
         if(!(handler instanceof HandlerMethod)){

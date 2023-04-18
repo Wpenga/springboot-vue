@@ -3,9 +3,20 @@ server:
   port: 8090
 
 spring:
+  #热部署
+  devtools:
+    restart:
+      #开启
+      enabled: true
+      #重启目录
+      additional-paths: src/main/java
+      # 排除静态目录
+      exclude: static/**
+  # 连接数据库
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mydb?serverTimezone=GMT%2b8
+    url: jdbc:mysql://localhost:3306/mydb
+#    ?serverTimezone=GMT%2b8
     username: root
     password: ''
 

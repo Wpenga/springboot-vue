@@ -1,14 +1,13 @@
-package com.system.springboot.UserService.Imp;
+package com.system.springboot.service.impl;
 
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.system.springboot.UserService.IUserService;
+import com.system.springboot.controller.dto.UserPasswordDTO;
+import com.system.springboot.service.IUserService;
 import com.system.springboot.common.Constants;
 import com.system.springboot.controller.dto.UserDTO;
 import com.system.springboot.entity.Menu;
-import com.system.springboot.entity.Role;
-import com.system.springboot.entity.RoleMenu;
 import com.system.springboot.entity.User;
 import com.system.springboot.exception.ServiceException;
 import com.system.springboot.mapper.RoleMapper;
@@ -31,12 +30,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements IUs
     private  static final Log LOG = Log.get();
 
     @Resource
+    private UserMapper userMapper;
+    @Resource
     private RoleMapper roleMapper;
 
     @Resource
     private RoleMenuMapper roleMenuMapper;
     @Resource
     private IMenuService menuService;
+
 
     @Override
     public UserDTO login(UserDTO userDTO) {     //登录逻辑判断
@@ -51,8 +53,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements IUs
             String role = one.getRole();
             //存储用户的菜单
             List<Menu> rolesMenus = getRoleMenus(role);
-
             userDTO.setMenus(rolesMenus);
+
             return userDTO;
         } else {
             throw new ServiceException(Constants.CODE_600, "用户名或密码错误");
@@ -70,6 +72,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements IUs
             throw new ServiceException(Constants.CODE_600, "用户名或密码错误");
         }
         return one;
+    }
+
+    @Override
+    public void updatePassword(UserPasswordDTO userPasswordDTO) {   //更新密码
+        int update = userMapper.updatePassword(userPasswordDTO);
+        if (update < 1) {
+            throw new ServiceException(Constants.CODE_600, "密码错误");
+        }
     }
 
     /**
@@ -105,7 +115,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements IUs
 
         // 查出系统所有的菜单(树形)
         List<Menu> menus = menuService.findMenus("");
-        // new一个最后筛选完成之后的list
+        // 存储筛选完成之后的列表
         List<Menu> roleMenus = new ArrayList<>();
         // 筛选当前用户角色的菜单
         for (Menu menu : menus) {

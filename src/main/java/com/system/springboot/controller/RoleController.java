@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.system.springboot.common.Result;
 import com.system.springboot.entity.Role;
 import com.system.springboot.service.IRoleService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/role")
+@Api(tags = "角色类操作")
 public class RoleController {
     @Resource
     private IRoleService roleService;
@@ -50,7 +52,7 @@ public class RoleController {
             return Result.success(roleService.list());
     }
     //查询单个数据
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     @ApiOperation(value = "获取单个数据")
     public Result findAll(@PathVariable Integer id){
         return Result.success(roleService.getById(id));
@@ -65,7 +67,7 @@ public class RoleController {
                            @RequestParam Integer pageSize) {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("name", name);
-        queryWrapper.orderByDesc("id");
+//        queryWrapper.orderByDesc("id");
         return Result.success(roleService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
@@ -87,7 +89,7 @@ public class RoleController {
      * @param menuIds 菜单id数组
      * @return
      */
-    @ApiOperation("获取角色id对应的菜单id")
+    @ApiOperation("设置角色id对应的菜单id")
     @PostMapping("/roleMenu/{roleId}")
     public Result roleMenu(@PathVariable Integer roleId, @RequestBody List<Integer> menuIds) {
         roleService.setRoleMenu(roleId, menuIds);
