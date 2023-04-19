@@ -15,8 +15,8 @@ spring:
   # 连接数据库
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mydb
-#    ?serverTimezone=GMT%2b8
+    url: jdbc:mysql://localhost:3306/mydb?serverTimezone=Asia/Shanghai
+#    GMT%2b8
     username: root
     password: ''
 
@@ -33,6 +33,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+#文件存储路径
 files:
   upload:
     path: H:/管理系统/files/

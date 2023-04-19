@@ -2,6 +2,8 @@ package com.system.springboot.service.impl;
 
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.system.springboot.controller.dto.UserPasswordDTO;
 import com.system.springboot.service.IUserService;
@@ -80,6 +82,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements IUs
         if (update < 1) {
             throw new ServiceException(Constants.CODE_600, "密码错误");
         }
+    }
+
+
+    @Override
+    public Page findPage(Page<User> page, String username, String address, String nickname,String email, String phone) {
+        return userMapper.findPage(page,username,address,nickname,email,phone);
     }
 
     /**

@@ -34,11 +34,17 @@ public class HealthController {
     public Result selectAllStudentAndRecord(@PathVariable String username) {
         return Result.success(healthService.selectAllStudentAndRecord(username));
     }
-    @ApiOperation(value = "新增或更新数据",notes = "根据id实现数据的更新")
+    @ApiOperation(value = "新增",notes = "新增数据，id自增")
     //新增或修改 @RequestBody将前台的数据映射成User对象
     @PostMapping
     public  Result save(@RequestBody Health health){
-        return Result.success(healthService.saveOrUpdate(health));
+        System.out.println("前端时间："+health.getPunchDate());
+        return Result.success(healthService.save(health));
+    }
+    @PutMapping
+    @ApiOperation(value = "更新数据",notes = "根据id实现数据的更新")
+    public  Result update(@RequestBody Health health){
+        return Result.success(healthService.updateById(health));
     }
     //删除数据 @PathVariable表述请求地址必须是（/{id}）
     @DeleteMapping("/{id}")
@@ -69,8 +75,7 @@ public class HealthController {
     @GetMapping("/page")
     @ApiOperation("分页/模糊查询")
     public Result findPage(@RequestParam Integer pageNum,
-                                @RequestParam Integer pageSize
-                                ){
+                           @RequestParam Integer pageSize){
             IPage<Health> page = new Page<>(pageNum, pageSize);
 
             QueryWrapper<Health> queryWrapper = new QueryWrapper<>();
@@ -82,9 +87,8 @@ public class HealthController {
     @GetMapping("/username/{username}")
     @ApiOperation(value = "根据用户名获取数据")
     public Result findOne(@PathVariable String username){
-//        QueryWrapper<Health> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.eq("username",username);
+        Health health = healthMapper.getHealthByUser(username);
+        System.out.println("时间："+health.getPunchDate());
         return  Result.success(healthMapper.getHealthByUser(username));
-//        return  Result.success(healthService.getOne(queryWrapper));
     }
 }

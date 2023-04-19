@@ -1,6 +1,7 @@
 package com.system.springboot.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -36,11 +37,11 @@ public class Leave implements Serializable {
       private String username;
 
       @ApiModelProperty("请假开始时间")
-      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
       private LocalDateTime startTime;
 
       @ApiModelProperty("请假结束时间")
-      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
       private LocalDateTime endTime;
 
       @ApiModelProperty("请假原因")
@@ -52,5 +53,9 @@ public class Leave implements Serializable {
       @ApiModelProperty("申请时间（记录学生申请时间）")
       private LocalDateTime applyTime;
 
+      @TableField(exist = false)
+      private String nickname;
+      @TableField(exist = false)
+      private String phone;
 
 }

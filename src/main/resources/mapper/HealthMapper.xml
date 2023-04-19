@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.system.springboot.mapper.HealthMapper">
 
+    <select id="selectAllStudentAndRecord" resultType="com.system.springboot.entity.User">
+        select s.*, r.id as record_id, r.punch_date as punchDate, r.is_fever, r.go_risk, r.vaccine_count
+        from sys_user s
+        left join stu_health r
+            on s.username=r.username
+                WHERE s.username = #{username}
+    </select>
 </mapper>

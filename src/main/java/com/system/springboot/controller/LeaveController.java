@@ -50,7 +50,8 @@ public class LeaveController {
     @GetMapping
     @ApiOperation(value = "获取所有数据")
     public Result findAll(){
-            return Result.success(leaveService.list());
+//            return Result.success(leaveService.list());
+        return  Result.success(leaveService.selectAllLeaveAndUsername());
     }
     //查询单个数据
     @GetMapping("/{id}")
@@ -64,14 +65,10 @@ public class LeaveController {
     @GetMapping("/page")
     @ApiOperation("分页/模糊查询")
     public Result findPage(@RequestParam Integer pageNum,
-                                @RequestParam Integer pageSize
-                                ){
-            IPage<Leave> page = new Page<>(pageNum, pageSize);
-
-            QueryWrapper<Leave> queryWrapper = new QueryWrapper<>();
-        //多条件模糊查询
-        queryWrapper.orderByDesc("id");
-        return Result.success(leaveService.page(page,queryWrapper));
+                           @RequestParam Integer pageSize,
+                           @RequestParam(defaultValue = "") String username,
+                           @RequestParam(defaultValue = "") String  nickname){
+        return Result.success(leaveService.findPage(new Page<>(pageNum, pageSize),username,nickname));
     }
     //查询单个数据 根据用户名
     @GetMapping("/username/{username}")
@@ -80,9 +77,11 @@ public class LeaveController {
         QueryWrapper<Leave> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         return Result.success(leaveService.list(queryWrapper));
-//        QueryWrapper<Leave> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.eq("username",username);
-////        return  Result.success(healthMapper.getHealthByUser(username));
-//        return  Result.success(leaveService.getOne((queryWrapper)));
+    }
+    //更新审批状态
+    @PutMapping("/allow")
+    @ApiOperation(value = "根据用户名获取数据")
+    public Result findOne(@PathVariable Leave leave) {
+        return Result.success(leaveService.updateById(leave));
     }
 }

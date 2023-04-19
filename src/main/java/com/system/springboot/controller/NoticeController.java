@@ -8,6 +8,7 @@ import com.system.springboot.entity.Notice;
 import com.system.springboot.service.INoticeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,18 +28,19 @@ import java.util.List;
 public class NoticeController {
     @Resource
     private INoticeService noticeService;
-    @ApiOperation(value = "新增或更新数据",notes = "根据id实现数据的更新")
+    @ApiOperation(value = "新增或更新数据",notes = "根据id实现数据的更新/新增")
     //新增或修改 @RequestBody将前台的数据映射成User对象
     @PostMapping
     public  Result save(@RequestBody Notice notice){
         return Result.success(noticeService.saveOrUpdate(notice));
     }
     @PutMapping
+    @ApiOperation(value = "更新数据",notes = "根据id实现数据的更新")
     public  Result update(@RequestBody Notice notice){
         return Result.success(noticeService.updateById(notice));
     }
     //删除数据 @PathVariable表述请求地址必须是（/{id}）
-    @DeleteMapping("/{ids}")
+    @DeleteMapping("/{id}")
     @ApiOperation("删除")
     public Result delete(@PathVariable Integer id){
             return Result.success(noticeService.removeById(id));
@@ -66,14 +68,25 @@ public class NoticeController {
     @GetMapping("/page")
     @ApiOperation("分页/模糊查询")
     public Result findPage(@RequestParam Integer pageNum,
-                                @RequestParam Integer pageSize
-                                ){
-            IPage<Notice> page = new Page<>(pageNum, pageSize);
+                           @RequestParam Integer pageSize,
+                           @RequestParam(defaultValue = "") String noticeTitle,
+                           @RequestParam(defaultValue = "") String createBy){
+        IPage<Notice> page = new Page<>(pageNum, pageSize);
 
-            QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(Strings.isNotEmpty(noticeTitle),"notice_title", noticeTitle);
+        queryWrapper.like(Strings.isNotEmpty(createBy),"create_by", createBy);
         //多条件模糊查询
 //        queryWrapper.orderByDesc("id");
         return  Result.success(noticeService.page(page,queryWrapper));
 //        return noticeService.page(page,queryWrapper);
+    }
+
+    @ApiOperation("获取发布的通知")
+    @GetMapping("/open")
+    public Result getOpen(){
+        QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("status","1");
+        return Result.success(noticeService.list(queryWrapper));
     }
 }

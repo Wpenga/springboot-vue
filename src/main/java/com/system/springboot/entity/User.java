@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,11 +15,12 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 //实体用户类
 //该注解实现自动写getter，setter类，toString
 @Data
-@TableName("stu_user")
+@TableName("sys_user")
 @ApiModel(value = "User对象")
 //@ToString
 
@@ -73,6 +75,10 @@ public class User {
     @Alias("角色")
     private String role;
 
+    @ApiModelProperty("打卡信息")
+    @TableField(exist = false)
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private List<Health> health;
 //    @ApiModelProperty("签到时间")
 //    @Alias("签到时间")
 //    private String signTime;

@@ -40,10 +40,10 @@ public class Health implements Serializable {
       @ApiModelProperty("当前地址")
       private String address;
 
-      @ApiModelProperty("是否发烧")
+      @ApiModelProperty("是否发烧（0:未发烧，1:发烧）")
       private Boolean isFever;
 
-      @ApiModelProperty("是否经过高危地区")
+      @ApiModelProperty("是否经过高危地区（0:未经过，1:经过）")
       private Boolean goRisk;
 
       @ApiModelProperty("疫苗针数")
@@ -51,8 +51,10 @@ public class Health implements Serializable {
 
 //      @TableField(value="punch_date")
       @ApiModelProperty("打卡时间")
-      /** 创建时间 */
-      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
       private Date punchDate;
+
+      @TableField(exist = false)
+      private String nickname;
 
 }

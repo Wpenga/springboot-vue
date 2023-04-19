@@ -132,18 +132,20 @@ public class UserController {
                                 @RequestParam Integer pageSize,
                                 @RequestParam(defaultValue = "") String username,
                                 @RequestParam(defaultValue = "") String address,
-                                @RequestParam(defaultValue = "") String  nickname){
+                                @RequestParam(defaultValue = "") String  nickname,
+                                @RequestParam(defaultValue = "") String  email,
+                                @RequestParam(defaultValue = "") String  phone){
         // MyBatis Plus
-        IPage<User> page = new Page<>(pageNum, pageSize);
-
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        //多条件模糊查询
-        queryWrapper.like(Strings.isNotEmpty(username),"username",username);
-        queryWrapper.like(Strings.isNotEmpty(nickname),"nickname",nickname);
-        queryWrapper.like(Strings.isNotEmpty(address),"address",address);
-        queryWrapper.orderByDesc("id");
-
-        return  Result.success(userService.page(page,queryWrapper));
+//        IPage<User> page = new Page<>(pageNum, pageSize);
+//
+//        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+//        //多条件模糊查询
+//        queryWrapper.like(Strings.isNotEmpty(username),"username",username);
+//        queryWrapper.like(Strings.isNotEmpty(nickname),"nickname",nickname);
+//        queryWrapper.like(Strings.isNotEmpty(address),"address",address);
+//        queryWrapper.orderByDesc("id");
+        return  Result.success(userService.findPage(new Page<>(pageNum, pageSize),username,address,nickname,email,phone));
+//        return  Result.success(userService.page(page,queryWrapper));
     }
 
     //导出

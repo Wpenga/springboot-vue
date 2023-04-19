@@ -1,5 +1,7 @@
 package com.system.springboot.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.system.springboot.controller.dto.UserDTO;
 import com.system.springboot.controller.dto.UserPasswordDTO;
@@ -15,6 +17,9 @@ public interface IUserService extends IService<User> {
     User register(UserDTO userDTO);
     //修改密码
     void updatePassword(UserPasswordDTO userPasswordDTO);
+
+    Page findPage(Page<User> page, String username, String address, String nickname, String email, String phone);
+
 
 //    Object selectAllStudentAndRecord(String username);
 

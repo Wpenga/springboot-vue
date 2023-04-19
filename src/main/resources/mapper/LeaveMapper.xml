@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.system.springboot.mapper.LeaveMapper">
-
+<!--    <resultMap id="pageLeave" type="com.system.springboot.entity.Leave">-->
+<!--        <result column="Leave_ID" property="leaveId" />-->
+<!--        <result column="username" property="username" />-->
+<!--        <result column="nickname" property="nickname" />-->
+<!--        <result column="Reason" property="reason" />-->
+<!--        <result column="phone" property="phone" />-->
+<!--        <result column="Start_Time" property="startTime" />-->
+<!--        <result column="End_Time" property="endTime" />-->
+<!--        <result column="Apply_Time" property="applyTime" />-->
+<!--    </resultMap>-->
+<!--    resultType="com.system.springboot.entity.Leave"-->
+    <select id="findPage" resultType="com.system.springboot.entity.Leave">
+            select l.*,u.nickname,u.phone
+            from stu_leave l
+            left join sys_user u
+            on l.username = u.username
+            <where>
+                <if test = "username != null and username !=''">
+                    and u.username like concat('%',#{username},'%')
+                </if>
+                <if test="nickname != null and nickname != ''">
+                    and u.nickname like concat('%', #{nickname} ,'%')
+                </if>
+            </where>
+    </select>
 </mapper>
